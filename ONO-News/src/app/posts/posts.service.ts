@@ -104,13 +104,36 @@ export class PostsService {
       });
   }
 
-  updatePost(id: string, title: string, category: string, content: string, date: string) {
+  updatePost(id: string, title: string, category: string, content: string) {
     let postData: Post | FormData ;
+
+    const date = new Date();
+    console.log('full date = ' + date);
+    const year = date.getFullYear();
+    console.log('year = ' + year);
+    const month = date.getMonth() + 1;
+    console.log('month = ' + month);
+    const day = date.getUTCDate();
+    console.log('day = ' + day);
+
+    if (day < 10) {
+      this.datString = '0' + day;
+    } else {
+      this.datString = day.toString();
+    }
+    if (month < 10) {
+      this.monthString = '0' + month;
+    } else {
+      this.monthString = month.toString();
+    }
+
+    const dateFormat = year.toString() + '-' + this.monthString + '-' + this.datString;
+
     postData = {
         id,
         title,
         category,
-        date,
+        date: dateFormat,
         content,
         creator: null
       };

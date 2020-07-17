@@ -17,6 +17,8 @@ import { CategoriesService } from 'src/app/category/categories.service';
 })
 
 export class PostCreateComponent implements OnInit, OnDestroy {
+  monthString;
+  dayString;
   enteredTitle = '';
   enteredContent = '';
   post: Post;
@@ -59,6 +61,27 @@ export class PostCreateComponent implements OnInit, OnDestroy {
           this.totalCategories = postData.categoryCount;
           this.categories = postData.categories;
         });
+    const date = new Date();
+    console.log('full date = ' + date);
+    const year = date.getFullYear();
+    console.log('year = ' + year);
+    const month = date.getMonth() + 1;
+    console.log('month = ' + month);
+    const day = date.getUTCDate();
+    console.log('day = ' + day);
+
+    if (day < 10) {
+      this.dayString = '0' + day;
+    } else {
+      this.dayString = day.toString();
+    }
+    if (month < 10) {
+      this.monthString = '0' + month;
+    } else {
+      this.monthString = month.toString();
+    }
+
+    const dateFormat = year.toString() + '-' + this.monthString + '-' + this.dayString;
 
     this.form = new FormGroup({
       title: new FormControl(null, {
@@ -79,7 +102,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
             title: postData.title,
             category: postData.category,
             content: postData.content,
-            date: null,
+            date: dateFormat,
             creator: postData.creator
           };
           this.form.setValue({
@@ -107,6 +130,28 @@ export class PostCreateComponent implements OnInit, OnDestroy {
   }
 
   onSavePost() {
+    const date = new Date();
+    console.log('full date = ' + date);
+    const year = date.getFullYear();
+    console.log('year = ' + year);
+    const month = date.getMonth() + 1;
+    console.log('month = ' + month);
+    const day = date.getUTCDate();
+    console.log('day = ' + day);
+
+    if (day < 10) {
+      this.dayString = '0' + day;
+    } else {
+      this.dayString = day.toString();
+    }
+    if (month < 10) {
+      this.monthString = '0' + month;
+    } else {
+      this.monthString = month.toString();
+    }
+
+    const dateFormat = year.toString() + '-' + this.monthString + '-' + this.dayString;
+
     if (this.form.invalid) {
       return;
     }
