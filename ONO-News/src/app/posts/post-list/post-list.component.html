@@ -1,0 +1,34 @@
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+
+<input matInput #search (keyup)="onTextChangedTitle()" type="text" placeholder="Search By Title" id="searchtitle"/>
+<input matInput #searchcategory (keyup)="onTextChangedCategory()" type="text" placeholder="Search By Category" id="searchcategory"/>
+<input matInput #searchdate (keyup)="onTextChangedDate()" type="date" placeholder="Search By Date" id="searchdate" />
+
+<br>
+<br>
+
+<mat-accordion multi="true" *ngIf="posts.length > 0 && !isLoading">
+  <br>
+  <mat-expansion-panel *ngFor="let post of posts  | postFilter: title | categoryFilter: category | dateFilter: date">
+    <mat-expansion-panel-header>
+      {{ post.title }}
+    </mat-expansion-panel-header>
+    <p> {{ post.category }} Category </p>
+    <p> {{ post.content }} </p>
+    <p> Date </p>
+    <p> {{ post.date }} </p>
+    <!-- <p> {{ post.date | date : 'dd/MM/yyyy' }} </p> -->
+
+    <mat-action-row *ngIf="userIsAuthenticated && userId === post.creator">
+      <a mat-button color="primary" [routerLink]="['/edit', post.id]">EDIT</a>
+      <button mat-button color="warn" (click)="onDelete(post.id)">DELETE</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+</mat-accordion>
+<mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="pageSizeOptions" (page)="onChangedPage($event)"
+  *ngIf="posts.length > 0"></mat-paginator>
+<p class="info-text mat-body-1" *ngIf="posts.length <= 0 && !isLoading">No Posts added yet!</p>
